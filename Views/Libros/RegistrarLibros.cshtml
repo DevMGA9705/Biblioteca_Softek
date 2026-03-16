@@ -1,0 +1,153 @@
+﻿@model Biblioteca_Softek.Models.DTOs.CrearLibros
+
+@{
+    ViewBag.Title = "Registrar Libros";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <i class="glyphicon glyphicon-book"></i> Registrar Nuevo Libro
+                    </h3>
+                </div>
+
+                <div class="panel-body">
+                    @using (Html.BeginForm("RegistrarLibrosAsync", "Libros", FormMethod.Post, new { id = "formLibro" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-horizontal">
+                            @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+                            <fieldset>
+                                <legend><small>Información del Libro</small></legend>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">Título *</label>
+                                    <div class="col-md-9">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-tag"></i></span>
+                                            @Html.EditorFor(model => model.Titulo, new { htmlAttributes = new { @class = "form-control", placeholder = "Ej: Cien años de soledad" } })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.Titulo, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">Autor *</label>
+                                    <div class="col-md-9">
+                                        @Html.DropDownListFor(model => model.AutorId, (SelectList)ViewBag.Autores, "-- Escribe para buscar --", new { @class = "form-control", @id = "select-autor" })
+                                        @Html.ValidationMessageFor(model => model.AutorId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="mt-3">
+                                <legend><small>Detalles de Publicación</small></legend>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-12 text-left" style="text-align:left">Año *</label>
+                                            <div class="col-md-12">
+                                                @Html.EditorFor(model => model.Year, new { htmlAttributes = new { @class = "form-control", type = "number" } })
+                                                @Html.ValidationMessageFor(model => model.Year, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-12 text-left" style="text-align:left">Páginas *</label>
+                                            <div class="col-md-12">
+                                                @Html.EditorFor(model => model.NumeroPaginas, new { htmlAttributes = new { @class = "form-control", type = "number", min = "1" } })
+                                                @Html.ValidationMessageFor(model => model.NumeroPaginas, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">Género *</label>
+                                    <div class="col-md-9">
+                                        @Html.DropDownListFor(model => model.Genero, (SelectList)ViewBag.Generos, "-- Seleccione --", new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Genero, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <hr />
+
+                            <div class="form-group">
+                                <div class="col-md-12 text-right">
+                                   
+                                    <button type="submit" class="btn btn-success shadow">
+                                        <i class="glyphicon glyphicon-floppy-disk"></i> Guardar Libro
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="panel-footer text-muted">
+                    <small>* Campos obligatorios</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#select-autor').select2({
+                width: '100%',
+                placeholder: "Escriba para buscar un autor..."
+            });
+        });
+    </script>
+
+    <style>
+        
+        .panel-primary {
+            border-color: #2c3e50;
+            
+        }
+
+            .panel-primary > .panel-heading {
+               
+                border-color: #2c3e50;
+            }
+
+        legend {
+            font-weight: bold;
+            color: #7f8c8d;
+            border-bottom: 1px solid #ecf0f1;
+            margin-bottom: 20px;
+        }
+
+        .shadow {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .mt-3 {
+            margin-top: 15px;
+        }
+
+        .input-group-addon {
+            background-color: #f8f9fa;
+        }
+        
+        .select2-container--default .select2-selection--single {
+            height: 38px !important;
+            padding: 5px;
+            border: 1px solid #ccc;
+        }
+    </style>
+}
+
